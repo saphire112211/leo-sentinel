@@ -4,7 +4,7 @@
 
 - [x] Add the final public GitHub repository URL to `README.md`.
 - [x] List Jawahar as the sole challenge entrant and current maintainer.
-- [ ] Complete the required IBM SkillsBuild activity for Jawahar.
+- [x] Complete the required IBM SkillsBuild activity for Jawahar: **How IBM Bob and AI Tools Are Changing the Way Solutions Are Built** (2026-08-29). Evidence: [`05-skillsbuild-completed.png`](bob-evidence/05-skillsbuild-completed.png).
 - [x] Complete `IBM_BOB_USAGE.md` with real prompts, commits, and screenshots.
 - [x] Record Jawahar's explicit contributions in the contribution record.
 
@@ -12,9 +12,9 @@
 
 - [x] Deploy publicly on Vercel Hobby after Hugging Face made new compute Spaces paid.
 - [x] Keep the Docker image validated on port `7860` and deploy with `DEMO_MODE=true`.
-- [ ] Add `WATSONX_API_KEY` and `WATSONX_PROJECT_ID` only as server-side Vercel variables.
+- [x] Keep `WATSONX_API_KEY` and `WATSONX_PROJECT_ID` absent from Vercel because IBM Cloud activation requested a payment card; retain the verified cached/deterministic path.
 - [x] Begin with `WATSONX_LIVE_ENABLED=false` and verify cache/fallback mode.
-- [ ] Enable Runtime Lite only after confirming the IBM account remains on Lite.
+- [x] Do not activate Runtime Lite while the account requires payment-card verification; no paid IBM plan is needed for the submission.
 - [x] Never select a paid plan, persistent paid storage, or upgraded hardware.
 - [x] Open the public URL in a clean browser context and test Globe, Fleet, and APIs.
 
@@ -39,3 +39,6 @@
 - **2:45–3:00** — Close on resilience impact and the zero-cost architecture.
 
 Keep the published video at or below three minutes and verify it is publicly viewable.
+
+- [x] Final render is 2:28.63 (below the three-minute limit).
+- [ ] Publish the uploaded YouTube draft as unlisted and verify the public link.

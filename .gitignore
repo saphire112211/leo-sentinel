@@ -55,6 +55,9 @@ yarn-error.log*
 !docs/bob-evidence/*.png
 !public/textures/*.png
 
+# local submission-video authoring workspace and renders
+/videos/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

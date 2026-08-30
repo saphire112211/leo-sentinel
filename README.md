@@ -6,10 +6,10 @@ globe, Sky view, Fleet analytics, SGP4 propagation, dish telemetry, handoffs,
 ground stations, and ISL routing, then adds outage simulation, a 96-day IBM
 Granite fleet outlook, and evidence-grounded mission briefs.
 
-This is the August IBM AI Builders Challenge submission:
+This is the August IBM AI Builders Challenge submission for the **Advance Space Exploration with AI** theme:
 
 - **Public demo:** [leo-sentinel.vercel.app](https://leo-sentinel.vercel.app)
-- **Three-minute video:** `TODO: final public video URL`
+- **Three-minute video:** [Watch the 2:28 submission video](https://youtu.be/GyvoJHHyz_g)
 - **Submission repository:** [jawaharlaldoon-bit/leo-sentinel](https://github.com/jawaharlaldoon-bit/leo-sentinel)
 
 ## The problem
@@ -183,8 +183,8 @@ IBM Bob prompts, outcomes, validation, and screenshots are recorded in
 [IBM_BOB_USAGE.md](IBM_BOB_USAGE.md). Team roles and challenge work are recorded
 in the consolidated
 [contribution record](docs/legal-and-contributions/CONTRIBUTIONS.md). Before
-submitting, add the final public video URL and complete the required SkillsBuild
-activity. The final operational checklist and exact video timeline are in
+submitting, Jawahar completed the required SkillsBuild activity personally; the
+[completion evidence](docs/bob-evidence/05-skillsbuild-completed.png) is retained with the submission materials. The final operational checklist and exact video timeline are in
 [docs/SUBMISSION_CHECKLIST.md](docs/SUBMISSION_CHECKLIST.md).
 
 ## License
