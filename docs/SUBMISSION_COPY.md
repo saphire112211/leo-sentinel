@@ -92,6 +92,7 @@ Shobhit Kapoor (`jawaharlaldoon-bit`) — sole challenge entrant and current mai
 - Public demo: https://leo-sentinel.vercel.app
 - Source: https://github.com/jawaharlaldoon-bit/leo-sentinel
 - Video: https://youtu.be/GyvoJHHyz_g
+- Challenge submission: https://aibuilderschallenge-bobhub.bemyapp.com/#/projects/6a94ce15a2c8f990e38623f6
 
 ## Limitations
 

@@ -42,3 +42,10 @@ Keep the published video at or below three minutes and verify it is publicly vie
 
 - [x] Final render is 2:28.63 (below the three-minute limit).
 - [x] Publish the YouTube video as unlisted and verify the public link: https://youtu.be/GyvoJHHyz_g.
+
+## Challenge publication
+
+- [x] Complete every BeMyApp project section (100%).
+- [x] Attach the public GitHub repository, live demo, and three-minute video.
+- [x] Upload SkillsBuild completion evidence for the sole entrant.
+- [x] Publish the August Space Exploration Challenge project page: https://aibuilderschallenge-bobhub.bemyapp.com/#/projects/6a94ce15a2c8f990e38623f6.
