@@ -81,11 +81,11 @@ The public submission does not require a physical Starlink dish, paid database, 
 
 ## Existing work and challenge work
 
-The submission transparently builds on an MIT-licensed Starlink visualization. The existing Next.js/Three.js visualization, propagation, routing, telemetry, data, and Fleet foundations are preserved. Jawahar's challenge work is the LEO Sentinel Mission Ops workflow, reusable scenario calculations, predefined outages, disabled-asset simulation, route comparison and risk evidence, Granite forecast integration and evaluation, grounded mission-brief pipeline, API hardening, zero-cost fallbacks, testing, deployment, and submission materials. Original copyright notices, license text, attribution, and Git history remain intact.
+The submission transparently builds on an MIT-licensed Starlink visualization. The existing Next.js/Three.js visualization, propagation, routing, telemetry, data, and Fleet foundations are preserved. Shobhit Kapoor's challenge work is the LEO Sentinel Mission Ops workflow, reusable scenario calculations, predefined outages, disabled-asset simulation, route comparison and risk evidence, Granite forecast integration and evaluation, grounded mission-brief pipeline, API hardening, zero-cost fallbacks, testing, deployment, and submission materials. Original copyright notices, license text, attribution, and Git history remain intact.
 
 ## Team
 
-Jawahar (`jawaharlaldoon-bit`) — sole challenge entrant and current maintainer.
+Shobhit Kapoor (`jawaharlaldoon-bit`) — sole challenge entrant and current maintainer.
 
 ## Links
 
@@ -111,4 +111,4 @@ I am preparing LEO Sentinel for the August challenge under “Advance Space Expl
 Could you please confirm in writing that this transparent reuse and substantial new challenge contribution are eligible under the rules? Repository: https://github.com/jawaharlaldoon-bit/leo-sentinel
 
 Thank you,
-Jawahar
+Shobhit Kapoor

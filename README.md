@@ -177,13 +177,13 @@ behavior.
 ## Team and submission
 
 **Sole challenge entrant and current maintainer:**
-[Jawahar (`jawaharlaldoon-bit`)](https://github.com/jawaharlaldoon-bit).
+[Shobhit Kapoor (`jawaharlaldoon-bit`)](https://github.com/jawaharlaldoon-bit).
 
 IBM Bob prompts, outcomes, validation, and screenshots are recorded in
 [IBM_BOB_USAGE.md](IBM_BOB_USAGE.md). Team roles and challenge work are recorded
 in the consolidated
 [contribution record](docs/legal-and-contributions/CONTRIBUTIONS.md). Before
-submitting, Jawahar completed the required SkillsBuild activity personally; the
+submitting, Shobhit Kapoor completed the required SkillsBuild activity personally; the
 [completion evidence](docs/bob-evidence/05-skillsbuild-completed.png) is retained with the submission materials. The final operational checklist and exact video timeline are in
 [docs/SUBMISSION_CHECKLIST.md](docs/SUBMISSION_CHECKLIST.md).
 

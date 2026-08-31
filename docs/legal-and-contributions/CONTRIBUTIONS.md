@@ -2,7 +2,7 @@
 
 ## August IBM AI Builders Challenge submission
 
-### Jawahar (`jawaharlaldoon-bit`) — sole challenge entrant and maintainer
+### Shobhit Kapoor (`jawaharlaldoon-bit`) — sole challenge entrant and maintainer
 
 - Directed the LEO Sentinel challenge concept and zero-cost requirement.
 - Integrated the Mission Ops scenario workflow into the existing HUD.

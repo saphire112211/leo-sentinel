@@ -63,4 +63,4 @@ unperformed Bob work.
 - [x] Bob produced a repository-wide audit covering each hackathon subsystem and authored the verified AI safety fixes in the current evidence commit.
 - [x] Screenshots show Bob operating on this exact repository.
 - [x] Prompts and outcomes are recorded honestly in the table above.
-- [x] Jawahar completed the required IBM SkillsBuild activity personally: **How IBM Bob and AI Tools Are Changing the Way Solutions Are Built** (2026-08-29). Evidence: [`05-skillsbuild-completed.png`](docs/bob-evidence/05-skillsbuild-completed.png).
+- [x] Shobhit Kapoor (`jawaharlaldoon-bit`) completed the required IBM SkillsBuild activity personally: **How IBM Bob and AI Tools Are Changing the Way Solutions Are Built** (2026-08-29). Evidence: [`05-skillsbuild-completed.png`](docs/bob-evidence/05-skillsbuild-completed.png).

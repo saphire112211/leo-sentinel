@@ -58,6 +58,10 @@ yarn-error.log*
 # local submission-video authoring workspace and renders
 /videos/
 
+# local generated submission artifacts and QA intermediates
+/output/
+/tmp/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

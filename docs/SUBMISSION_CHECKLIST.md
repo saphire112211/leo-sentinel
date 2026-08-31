@@ -3,10 +3,10 @@
 ## Project and team
 
 - [x] Add the final public GitHub repository URL to `README.md`.
-- [x] List Jawahar as the sole challenge entrant and current maintainer.
-- [x] Complete the required IBM SkillsBuild activity for Jawahar: **How IBM Bob and AI Tools Are Changing the Way Solutions Are Built** (2026-08-29). Evidence: [`05-skillsbuild-completed.png`](bob-evidence/05-skillsbuild-completed.png).
+- [x] List Shobhit Kapoor (`jawaharlaldoon-bit`) as the sole challenge entrant and current maintainer.
+- [x] Complete the required IBM SkillsBuild activity for Shobhit Kapoor: **How IBM Bob and AI Tools Are Changing the Way Solutions Are Built** (2026-08-29). Evidence: [`05-skillsbuild-completed.png`](bob-evidence/05-skillsbuild-completed.png).
 - [x] Complete `IBM_BOB_USAGE.md` with real prompts, commits, and screenshots.
-- [x] Record Jawahar's explicit contributions in the contribution record.
+- [x] Record Shobhit Kapoor's explicit contributions in the contribution record.
 
 ## Zero-cost deployment
 
