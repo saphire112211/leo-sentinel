@@ -8,6 +8,43 @@
 import type { DuckDBInstance } from '@duckdb/node-api';
 import { existsSync } from 'fs';
 import { join } from 'path';
+import fleetSnapshot from './fleet-snapshot.json';
+
+interface BundledDailyRow {
+  date: string;
+  shell_id: number;
+  total_count: number;
+  operational_count: number;
+  raising_count: number;
+  deorbiting_count: number;
+  reentered_count: number;
+  isl_operational_count: number;
+  avg_altitude: number;
+  min_altitude: number;
+  max_altitude: number;
+  new_launches: number;
+  anomalous_count: number;
+}
+
+interface BundledLatestRow {
+  norad_id: number;
+  name: string;
+  status: string;
+  altitude_km: number;
+  shell_id: number;
+  launch_year: number;
+  raan: number;
+  mean_motion: number;
+  inclination: number;
+  epoch_ts: number;
+}
+
+const BUNDLED_DAILY = fleetSnapshot.daily as BundledDailyRow[];
+const BUNDLED_LATEST = fleetSnapshot.latest as BundledLatestRow[];
+
+function hasDataset(path: string): boolean {
+  return process.env.FLEET_FORCE_BUNDLED !== 'true' && existsSync(path);
+}
 
 // ── Paths ──────────────────────────────────────────────────────────────
 
@@ -103,7 +140,14 @@ export async function clearCache(): Promise<void> {
 }
 
 export async function getShellsSummary() {
-  if (!existsSync(DAILY_PATH)) return { shells: [], recordCount: 0, lastIngest: null };
+  if (!hasDataset(DAILY_PATH)) {
+    const lastDate = BUNDLED_DAILY.at(-1)?.date ?? null;
+    return {
+      shells: lastDate ? BUNDLED_DAILY.filter((row) => row.date === lastDate) : [],
+      recordCount: new Set(BUNDLED_DAILY.map((row) => row.date)).size,
+      lastIngest: lastDate ? `${lastDate}T00:00:00.000Z` : null,
+    };
+  }
 
   const shells = await query<Record<string, unknown>>(`
     WITH latest AS (SELECT MAX(date) as d FROM read_parquet('${DAILY_PATH}'))
@@ -124,10 +168,13 @@ export async function getShellsSummary() {
 }
 
 export async function getGrowthData(from?: string, to?: string) {
-  if (!existsSync(DAILY_PATH)) return [];
-
   const safeFrom = validateDate(from);
   const safeTo = validateDate(to);
+  if (!hasDataset(DAILY_PATH)) {
+    return BUNDLED_DAILY.filter((row) =>
+      (!safeFrom || row.date >= safeFrom) && (!safeTo || row.date <= safeTo));
+  }
+
   const where: string[] = [];
   if (safeFrom) where.push(`date >= '${safeFrom}'`);
   if (safeTo) where.push(`date <= '${safeTo}'`);
@@ -143,10 +190,17 @@ export async function getGrowthData(from?: string, to?: string) {
 }
 
 export async function getLaunchData(from?: string, to?: string) {
-  if (!existsSync(DAILY_PATH)) return [];
-
   const safeFrom = validateDate(from);
   const safeTo = validateDate(to);
+  if (!hasDataset(DAILY_PATH)) {
+    const launches = new Map<string, number>();
+    for (const row of BUNDLED_DAILY) {
+      if ((safeFrom && row.date < safeFrom) || (safeTo && row.date > safeTo)) continue;
+      launches.set(row.date, (launches.get(row.date) ?? 0) + row.new_launches);
+    }
+    return [...launches.entries()].map(([date, new_launches]) => ({ date, new_launches }));
+  }
+
   const where: string[] = [];
   if (safeFrom) where.push(`date >= '${safeFrom}'`);
   if (safeTo) where.push(`date <= '${safeTo}'`);
@@ -162,25 +216,38 @@ export async function getLaunchData(from?: string, to?: string) {
 }
 
 export async function getAltitudeData(_date?: string) {
-  if (existsSync(LATEST_PATH)) {
+  if (hasDataset(LATEST_PATH)) {
     return query(`
       SELECT norad_id, altitude_km, shell_id, status
       FROM read_parquet('${LATEST_PATH}')
     `);
   }
-  return [];
+  return BUNDLED_LATEST.map(({ norad_id, altitude_km, shell_id, status }) => ({
+    norad_id,
+    altitude_km,
+    shell_id,
+    status,
+  }));
 }
 
 export async function getPlaneData(shellId: number) {
   // Use latest_satellites (pre-computed latest per sat) — much faster than scanning tle_snapshots
-  if (existsSync(LATEST_PATH)) {
+  if (hasDataset(LATEST_PATH)) {
     return query(`
       SELECT raan, altitude_km, mean_motion, inclination, epoch_ts
       FROM read_parquet('${LATEST_PATH}')
       WHERE shell_id = ${shellId}
     `);
   }
-  return [];
+  return BUNDLED_LATEST
+    .filter((row) => row.shell_id === shellId)
+    .map(({ raan, altitude_km, mean_motion, inclination, epoch_ts }) => ({
+      raan,
+      altitude_km,
+      mean_motion,
+      inclination,
+      epoch_ts,
+    }));
 }
 
 export async function getKpis() {
@@ -188,7 +255,18 @@ export async function getKpis() {
     total: 0, operational: 0, islCapable: 0, raising: 0, deorbiting: 0, decayed: 0, launched2026: 0,
   };
 
-  if (!existsSync(DAILY_PATH)) return result;
+  if (!hasDataset(DAILY_PATH)) {
+    const lastDate = BUNDLED_DAILY.at(-1)?.date;
+    for (const row of BUNDLED_DAILY) {
+      if (row.date !== lastDate) continue;
+      result.total += row.total_count;
+      result.operational += row.operational_count;
+      result.islCapable += row.isl_operational_count;
+      result.raising += row.raising_count;
+      result.deorbiting += row.deorbiting_count;
+    }
+    return result;
+  }
 
   const rows = await query<Record<string, number>>(`
     WITH latest AS (SELECT MAX(date) as d FROM read_parquet('${DAILY_PATH}'))
@@ -209,7 +287,17 @@ export async function getKpis() {
 }
 
 export async function getVintageData() {
-  if (!existsSync(LATEST_PATH)) return [];
+  if (!hasDataset(LATEST_PATH)) {
+    const counts = new Map<string, { launch_year: number; status: string; count: number }>();
+    for (const row of BUNDLED_LATEST) {
+      const key = `${row.launch_year}:${row.status}`;
+      const current = counts.get(key) ?? { launch_year: row.launch_year, status: row.status, count: 0 };
+      current.count += 1;
+      counts.set(key, current);
+    }
+    return [...counts.values()].sort((left, right) =>
+      left.launch_year - right.launch_year || left.status.localeCompare(right.status));
+  }
   return query(`
     SELECT launch_year, status, COUNT(*) as count
     FROM read_parquet('${LATEST_PATH}')
@@ -219,9 +307,27 @@ export async function getVintageData() {
 }
 
 export async function searchSatellites(q: string, limit = 20) {
-  if (!existsSync(LATEST_PATH)) return [];
   const safe = sanitizeSearchQuery(q);
   if (safe.length < 2) return [];
+
+  if (!hasDataset(LATEST_PATH)) {
+    const normalized = safe.toLowerCase();
+    const isNumeric = /^\d+$/.test(safe);
+    return BUNDLED_LATEST
+      .filter((row) => isNumeric
+        ? row.norad_id === Number(safe)
+        : row.name.toLowerCase().includes(normalized))
+      .sort((left, right) => left.name.localeCompare(right.name))
+      .slice(0, limit)
+      .map(({ norad_id, name, status, altitude_km, shell_id, launch_year }) => ({
+        norad_id,
+        name,
+        status,
+        altitude_km,
+        shell_id,
+        launch_year,
+      }));
+  }
 
   const isNumeric = /^\d+$/.test(safe);
   const where = isNumeric
@@ -237,7 +343,14 @@ export async function searchSatellites(q: string, limit = 20) {
 }
 
 export async function getSatelliteHistory(noradId: number) {
-  if (!existsSync(TLE_PATH)) return [];
+  if (!hasDataset(TLE_PATH)) {
+    const row = BUNDLED_LATEST.find((candidate) => candidate.norad_id === noradId);
+    return row ? [{
+      epoch_utc: new Date(row.epoch_ts * 1000).toISOString(),
+      altitude_km: row.altitude_km,
+      status: row.status,
+    }] : [];
+  }
 
   return query(`
     SELECT epoch_utc, altitude_km, status
