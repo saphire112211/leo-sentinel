@@ -41,4 +41,4 @@
 Keep the published video at or below three minutes and verify it is publicly viewable.
 
 - [x] Final render is 2:28.63 (below the three-minute limit).
-- [ ] Publish the uploaded YouTube draft as unlisted and verify the public link.
+- [x] Publish the YouTube video as unlisted and verify the public link: https://youtu.be/GyvoJHHyz_g.
