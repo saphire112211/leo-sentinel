@@ -11,11 +11,11 @@ import {
 
 describe('bundled Fleet snapshot', () => {
   beforeEach(() => {
-    process.env.FLEET_FORCE_BUNDLED = 'true';
+    process.env.VERCEL = '1';
   });
 
   afterEach(() => {
-    delete process.env.FLEET_FORCE_BUNDLED;
+    delete process.env.VERCEL;
   });
 
   it('keeps the public dashboard populated without Parquet access', async () => {

@@ -43,7 +43,9 @@ const BUNDLED_DAILY = fleetSnapshot.daily as BundledDailyRow[];
 const BUNDLED_LATEST = fleetSnapshot.latest as BundledLatestRow[];
 
 function hasDataset(path: string): boolean {
-  return process.env.FLEET_FORCE_BUNDLED !== 'true' && existsSync(path);
+  return process.env.VERCEL !== '1' &&
+    process.env.FLEET_FORCE_BUNDLED !== 'true' &&
+    existsSync(path);
 }
 
 // ── Paths ──────────────────────────────────────────────────────────────
