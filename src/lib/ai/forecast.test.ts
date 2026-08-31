@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { clearAiCacheForTests, getCached, setCached, stableHash } from './cache';
+import { clearAiCacheForTests, getCached, modeForCachedResult, setCached, stableHash } from './cache';
 import {
   applyGraniteForecast,
   backtestForecast,
@@ -77,5 +77,11 @@ describe('fleet forecast', () => {
     // it "cache" (which implies a prior live IBM result was cached).
     const forecast = buildDeterministicForecast(createBundledDemoObservations(), 'fallback');
     expect(forecast.mode).toBe('fallback');
+    expect(modeForCachedResult(forecast.mode)).toBe('fallback');
+  });
+
+  it('labels only a previously model-generated result as cache', () => {
+    expect(modeForCachedResult('live')).toBe('cache');
+    expect(modeForCachedResult('cache')).toBe('cache');
   });
 });

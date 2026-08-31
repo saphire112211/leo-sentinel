@@ -242,8 +242,16 @@ export default function MissionOpsPanel() {
           {brief && (
             <div className="mt-3 border border-violet-400/20 rounded p-2 bg-violet-400/5">
               <div className="flex justify-between text-[8px] uppercase">
-                <span className="text-violet-300">Granite mission brief</span>
-                <span className="text-white/35">{brief.mode}</span>
+                <span className="text-violet-300">
+                  {brief.mode === 'live'
+                    ? 'Granite mission brief'
+                    : brief.mode === 'cache'
+                      ? 'Cached Granite mission brief'
+                      : 'Deterministic mission brief'}
+                </span>
+                <span className="text-white/35">
+                  {brief.mode === 'fallback' ? 'RULE-BASED' : brief.mode.toUpperCase()}
+                </span>
               </div>
               <p className="text-[9px] text-white/70 leading-relaxed mt-1">{brief.brief.executiveSummary}</p>
               <ol className="mt-2 space-y-1 text-[8px] text-white/55">
@@ -258,9 +266,13 @@ export default function MissionOpsPanel() {
 
           <hr className="hud-divider my-3" />
           <div className="text-[8px] text-white/35 space-y-1">
-            <div className="flex justify-between"><span>watsonx</span><span className="text-green-400/70">{health?.watsonx.liveEnabled ? 'LIVE LITE' : 'CACHED FALLBACK'}</span></div>
+            <div className="flex justify-between"><span>watsonx</span><span className="text-green-400/70">{health?.watsonx.liveEnabled ? 'LIVE LITE AVAILABLE' : 'DETERMINISTIC FALLBACK'}</span></div>
             <div className="flex justify-between"><span>TTM 96-day outlook</span><span className="text-white/60">{latestForecast?.operational.toLocaleString() ?? 'loading'}</span></div>
-            <div className="truncate">ibm/granite-4-h-small · ibm/granite-ttm-512-96-r2</div>
+            <div className="truncate">
+              {health?.watsonx.liveEnabled
+                ? 'ibm/granite-4-h-small · ibm/granite-ttm-512-96-r2'
+                : 'Granite targets configured · public fallback active'}
+            </div>
           </div>
         </div>
       )}

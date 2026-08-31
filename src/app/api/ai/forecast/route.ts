@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ApiInputError, aiFailure, clientAddress, readLimitedJson } from '@/lib/ai/api-utils';
-import { getCached, setCached, stableHash } from '@/lib/ai/cache';
+import { getCached, modeForCachedResult, setCached, stableHash } from '@/lib/ai/cache';
 import { loadFleetForecastInput } from '@/lib/ai/fleet-data';
 import { applyGraniteForecast, buildDeterministicForecast } from '@/lib/ai/forecast';
 import { checkRateLimit } from '@/lib/ai/rate-limit';
@@ -25,7 +25,9 @@ export async function POST(request: NextRequest) {
     const datasetVersion = stableHash(observations);
     const key = `forecast:${datasetVersion}`;
     const cached = getCached<FleetForecast>(key);
-    if (cached && !body.refresh) return NextResponse.json({ ...cached, mode: 'cache', source });
+    if (cached && !body.refresh) {
+      return NextResponse.json({ ...cached, mode: modeForCachedResult(cached.mode), source });
+    }
 
     const fallback = buildDeterministicForecast(observations, 'fallback');
     const refreshAuthorized =

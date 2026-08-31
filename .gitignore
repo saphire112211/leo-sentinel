@@ -72,6 +72,12 @@ data/fleet.db-wal
 data/fleet.db-shm
 data/last-celestrak-response.json
 data/dataset/
+!data/dataset/
+data/dataset/*
+!data/dataset/data/
+data/dataset/data/*
+!data/dataset/data/daily_snapshots.parquet
+!data/dataset/data/latest_satellites.parquet
 data/tle-archive/
 data/satcat/
 data/launch-log/

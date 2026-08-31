@@ -17,8 +17,20 @@ export default function ViewControls() {
   const demoLocation = useAppStore((s) => s.demoLocation);
   const setDemoLocation = useAppStore((s) => s.setDemoLocation);
   const [switching, setSwitching] = useState(false);
+  const [demoLocked, setDemoLocked] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
   useEffect(() => { setIsTouch('ontouchstart' in window); }, []);
+  useEffect(() => {
+    fetch('/api/health')
+      .then((response) => response.json())
+      .then((health: { demoMode?: boolean }) => {
+        if (health.demoMode) {
+          useAppStore.getState().setDemoMode(true);
+          setDemoLocked(true);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const toggleMode = async () => {
     setSwitching(true);
@@ -72,7 +84,7 @@ export default function ViewControls() {
       {/* Demo/Live toggle */}
       <button
         onClick={toggleMode}
-        disabled={switching}
+        disabled={switching || demoLocked}
         className="flex items-center gap-2 w-full text-left mb-2 group min-h-[44px] md:min-h-0"
       >
         <div
@@ -91,7 +103,11 @@ export default function ViewControls() {
             {switching ? 'Switching...' : demoMode ? 'Demo' : 'Live'}
           </span>
           <div className="text-[9px] text-white/45 leading-tight">
-            {demoMode ? 'Simulated telemetry' : 'Real dish telemetry'}
+            {demoMode
+              ? demoLocked
+                ? 'Simulated telemetry · deployment default'
+                : 'Simulated telemetry'
+              : 'Real dish telemetry'}
           </div>
         </div>
       </button>

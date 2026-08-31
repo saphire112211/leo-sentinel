@@ -8,7 +8,7 @@ import {
   validateMissionBrief,
   validateScenarioForBrief,
 } from '@/lib/ai/brief';
-import { getCached, setCached } from '@/lib/ai/cache';
+import { getCached, modeForCachedResult, setCached } from '@/lib/ai/cache';
 import { checkRateLimit } from '@/lib/ai/rate-limit';
 import type { MissionBriefResponse } from '@/lib/ai/types';
 import { generateGraniteBrief, isLiveWatsonxEnabled, WatsonxError } from '@/lib/ai/watsonx';
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     const scenario = validateScenarioForBrief(body.scenario);
     const cacheKey = scenarioCacheKey(scenario);
     const cached = getCached<MissionBriefResponse>(cacheKey);
-    if (cached) return NextResponse.json({ ...cached, mode: 'cache' });
+    if (cached) return NextResponse.json({ ...cached, mode: modeForCachedResult(cached.mode) });
 
     if (isLiveWatsonxEnabled()) {
       for (let attempt = 0; attempt < 2; attempt += 1) {

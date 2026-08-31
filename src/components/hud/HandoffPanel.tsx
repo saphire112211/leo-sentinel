@@ -145,9 +145,16 @@ export default function HandoffPanel() {
           TLE {tleAge}
         </span>
         <span className="text-white/20">|</span>
-        <span className="flex items-center gap-1" title={wsConnected ? 'WebSocket connected to server' : 'WebSocket disconnected'}>
-          <span className={`inline-block w-1.5 h-1.5 rounded-full ${wsConnected ? 'bg-green-400' : 'bg-red-500'}`} />
-          WS
+        <span
+          className="flex items-center gap-1"
+          title={demoMode
+            ? 'Browser-local simulated telemetry; no WebSocket required'
+            : wsConnected
+              ? 'WebSocket connected to server'
+              : 'WebSocket disconnected'}
+        >
+          <span className={`inline-block w-1.5 h-1.5 rounded-full ${demoMode || wsConnected ? 'bg-green-400' : 'bg-red-500'}`} />
+          {demoMode ? 'SIM' : 'WS'}
         </span>
       </div>
 

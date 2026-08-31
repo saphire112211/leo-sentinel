@@ -37,6 +37,7 @@ export interface FleetForecast {
   series: ForecastPoint[];
   evaluation: Record<ForecastMetricName, AccuracyMetric>;
   limitations: string[];
+  source?: 'hugging-face-dataset' | 'bundled-demo-cache';
 }
 
 export interface MissionBrief {

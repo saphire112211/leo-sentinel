@@ -51,11 +51,19 @@ export function GraniteForecast() {
   );
   const selected = METRICS.find((item) => item.key === metric) ?? METRICS[0];
   const evaluation = forecast?.evaluation[metric];
+  const modeLabel = forecast?.mode === 'live'
+    ? 'LIVE GRANITE'
+    : forecast?.mode === 'cache'
+      ? 'CACHED GRANITE'
+      : forecast
+        ? 'DETERMINISTIC DEMO'
+        : 'LOADING';
+  const isModelResult = forecast?.mode === 'live' || forecast?.mode === 'cache';
 
   const controls = (
     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
       <span style={{ fontFamily: 'monospace', fontSize: 8, color: forecast?.mode === 'live' ? '#4ade80' : '#fbbf24' }}>
-        {forecast?.mode?.toUpperCase() ?? 'LOADING'}
+        {modeLabel}
       </span>
       <select
         value={metric}
@@ -69,11 +77,17 @@ export function GraniteForecast() {
 
   return (
     <ChartPanel
-      title="Granite Fleet Outlook"
-      subtitle="96-day decision-support forecast across five fleet health signals"
+      title={isModelResult ? 'Granite Fleet Outlook' : 'Fleet Outlook'}
+      subtitle={isModelResult
+        ? '96-day Granite decision-support forecast across five fleet health signals'
+        : '96-day deterministic trend baseline across five fleet health signals'}
       fullWidth
       controls={controls}
-      footnote={forecast ? `${forecast.modelId} · ${forecast.observationsUsed} daily observations · dataset ${forecast.datasetVersion} · ${forecast.mode} result` : undefined}
+      footnote={forecast
+        ? isModelResult
+          ? `${forecast.modelId} · ${forecast.observationsUsed} daily observations · dataset ${forecast.datasetVersion} · ${forecast.mode} Granite result`
+          : `Deterministic trend baseline · ${forecast.observationsUsed} daily observations · dataset ${forecast.datasetVersion} · Granite target configured: ${forecast.modelId}`
+        : undefined}
     >
       {error ? (
         <div style={{ height: 220, display: 'grid', placeItems: 'center', fontFamily: 'monospace', fontSize: 10, color: '#f87171' }}>Forecast unavailable; existing Fleet analytics remain active.</div>

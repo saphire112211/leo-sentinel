@@ -1,3 +1,5 @@
+import type { AiResultMode } from './types';
+
 interface CacheEntry<T> {
   value: T;
   expiresAt: number;
@@ -17,6 +19,14 @@ export function getCached<T>(key: string): T | null {
 
 export function setCached<T>(key: string, value: T, ttlMs = 24 * 60 * 60 * 1000): void {
   memoryCache.set(key, { value, expiresAt: Date.now() + ttlMs });
+}
+
+/**
+ * A deterministic fallback stays a fallback when served from memory. Only a
+ * previously model-generated result should be presented as a cached AI result.
+ */
+export function modeForCachedResult(mode: AiResultMode): AiResultMode {
+  return mode === 'fallback' ? 'fallback' : 'cache';
 }
 
 export function stableHash(value: unknown): string {
